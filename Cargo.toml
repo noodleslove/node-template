@@ -1,0 +1,10 @@
+[workspace]
+members = [
+    "node",
+    "pallets/*",
+    "runtime",
+]
+
+[profile.release]
+# Substrate runtime requires unwinding.
+panic = "unwind"

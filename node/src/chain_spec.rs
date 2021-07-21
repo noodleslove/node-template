@@ -1,7 +1,7 @@
 use sp_core::{Pair, Public, sr25519};
 use node_template_runtime::{
-	AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig,
-	SudoConfig, SystemConfig, WASM_BINARY, Signature
+	AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, TokensConfig,
+	SudoConfig, SystemConfig, WASM_BINARY, Signature, CurrencyId,
 };
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_finality_grandpa::AuthorityId as GrandpaId;
@@ -141,7 +141,7 @@ fn testnet_genesis(
 		},
 		balances: BalancesConfig {
 			// Configure endowed accounts with initial balance of 1 << 60.
-			balances: endowed_accounts.iter().cloned().map(|k|(k, 1 << 60)).collect(),
+			balances: endowed_accounts.iter().cloned().map(|k| (k, 1 << 60)).collect(),
 		},
 		aura: AuraConfig {
 			authorities: initial_authorities.iter().map(|x| (x.0.clone())).collect(),
@@ -152,6 +152,9 @@ fn testnet_genesis(
 		sudo: SudoConfig {
 			// Assign network admin rights.
 			key: root_key,
+		},
+		tokens: TokensConfig {
+			balances: endowed_accounts.iter().cloned().map(|acc| (acc, CurrencyId::KSM, 1 << 60)).collect(),
 		},
 	}
 }

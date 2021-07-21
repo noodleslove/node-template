@@ -6,14 +6,18 @@
 #[cfg(feature = "std")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
+use codec::{Decode, Encode};
+#[cfg(feature = "std")]
+use serde::{Deserialize, Serialize};
+
 use sp_std::prelude::*;
 use sp_core::{crypto::KeyTypeId, OpaqueMetadata};
 use sp_runtime::{
-	ApplyExtrinsicResult, generic, create_runtime_str, impl_opaque_keys, MultiSignature,
+	ApplyExtrinsicResult, generic, create_runtime_str, impl_opaque_keys, MultiSignature, RuntimeDebug,
 	transaction_validity::{TransactionValidity, TransactionSource},
 };
 use sp_runtime::traits::{
-	BlakeTwo256, Block as BlockT, AccountIdLookup, Verify, IdentifyAccount, NumberFor,
+	BlakeTwo256, Block as BlockT, AccountIdLookup, Verify, IdentifyAccount, NumberFor, Zero,
 };
 use sp_api::impl_runtime_apis;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
@@ -292,7 +296,7 @@ impl pallet_template::Config for Runtime {
 
 parameter_type_with_key! {
 	pub ExistentialDeposits: |_id: CurrencyId| -> Balance {
-		Default::default()
+		Zero::zero()
 	};
 }
 
@@ -321,6 +325,11 @@ impl orml_currencies::Config for Runtime {
 	type WeightInfo = ();
 }
 
+impl pallet_exchange::Config for Runtime {
+	type Event = Event;
+	type Currency = Currencies;
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub enum Runtime where
@@ -341,6 +350,7 @@ construct_runtime!(
 
 		Tokens: orml_tokens::{Pallet, Storage, Event<T>, Config<T>},
 		Currencies: orml_currencies::{Pallet, Call, Event<T>},
+		Exchange: pallet_exchange::{Pallet, Call, Storage, Event<T>},
 	}
 );
 

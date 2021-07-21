@@ -3819,6 +3819,7 @@ dependencies = [
  "orml-traits",
  "pallet-aura",
  "pallet-balances",
+ "pallet-exchange",
  "pallet-grandpa",
  "pallet-randomness-collective-flip",
  "pallet-sudo",
@@ -3827,6 +3828,7 @@ dependencies = [
  "pallet-transaction-payment",
  "pallet-transaction-payment-rpc-runtime-api",
  "parity-scale-codec",
+ "serde",
  "sp-api",
  "sp-block-builder",
  "sp-consensus-aura",
@@ -4134,6 +4136,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-exchange"
+version = "3.0.0"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=polkadot-v0.9.8)",
+ "frame-system 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=polkadot-v0.9.8)",
+ "orml-currencies",
+ "orml-tokens",
+ "orml-traits",
+ "pallet-balances",
+ "parity-scale-codec",
+ "serde",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=polkadot-v0.9.8)",
+ "sp-io 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=polkadot-v0.9.8)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=polkadot-v0.9.8)",
+]
+
+[[package]]
 name = "pallet-grandpa"
 version = "3.1.0"
 source = "git+https://github.com/paritytech/substrate.git?branch=polkadot-v0.9.8#1b758b2a8d151d97d2242260c465b6df9cb8a7a4"
@@ -4153,6 +4173,23 @@ dependencies = [
  "sp-session",
  "sp-staking 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=polkadot-v0.9.8)",
  "sp-std 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=polkadot-v0.9.8)",
+]
+
+[[package]]
+name = "pallet-item"
+version = "0.1.0"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=polkadot-v0.9.8)",
+ "frame-system 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=polkadot-v0.9.8)",
+ "orml-nft",
+ "orml-traits",
+ "pallet-balances",
+ "parity-scale-codec",
+ "serde",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=polkadot-v0.9.8)",
+ "sp-io 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=polkadot-v0.9.8)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=polkadot-v0.9.8)",
 ]
 
 [[package]]

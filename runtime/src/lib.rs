@@ -50,6 +50,8 @@ use orml_traits::parameter_type_with_key;
 /// Import the template pallet.
 pub use pallet_template;
 
+pub mod items;
+
 /// An index to a block.
 pub type BlockNumber = u32;
 
@@ -325,9 +327,27 @@ impl orml_currencies::Config for Runtime {
 	type WeightInfo = ();
 }
 
+parameter_types! {
+	pub const MaxClassMetadata: u32 = items::MAX_CLASS_METADATA;
+	pub const MaxTokenMetadata: u32 = items::MAX_TOKEN_METADATA;
+}
+
+impl orml_nft::Config for Runtime {
+	type ClassId = u64;
+	type TokenId = u64;
+	type ClassData = items::ItemClassData;
+	type TokenData = items::ItemTokenData;
+	type MaxClassMetadata = MaxClassMetadata;
+	type MaxTokenMetadata = MaxTokenMetadata;
+}
+
 impl pallet_exchange::Config for Runtime {
 	type Event = Event;
 	type Currency = Currencies;
+}
+
+impl pallet_items::Config for Runtime {
+	type Event = Event;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
@@ -350,7 +370,9 @@ construct_runtime!(
 
 		Tokens: orml_tokens::{Pallet, Storage, Event<T>, Config<T>},
 		Currencies: orml_currencies::{Pallet, Call, Event<T>},
+		Nft: orml_nft::{Pallet, Storage, Config<T>},
 		Exchange: pallet_exchange::{Pallet, Call, Storage, Event<T>},
+		Items: pallet_items::{Pallet, Call, Storage, Event<T>},
 	}
 );
 

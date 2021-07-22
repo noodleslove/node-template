@@ -1,7 +1,7 @@
 use sp_core::{Pair, Public, sr25519};
 use node_template_runtime::{
 	AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, TokensConfig,
-	SudoConfig, SystemConfig, WASM_BINARY, Signature, CurrencyId,
+	SudoConfig, SystemConfig, NftConfig, WASM_BINARY, Signature, CurrencyId, items,
 };
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_finality_grandpa::AuthorityId as GrandpaId;
@@ -151,10 +151,13 @@ fn testnet_genesis(
 		},
 		sudo: SudoConfig {
 			// Assign network admin rights.
-			key: root_key,
+			key: root_key.clone(),
 		},
 		tokens: TokensConfig {
 			balances: endowed_accounts.iter().cloned().map(|acc| (acc, CurrencyId::KSM, 1 << 60)).collect(),
+		},
+		nft: NftConfig {
+			tokens: items::items_genesis(&root_key),
 		},
 	}
 }

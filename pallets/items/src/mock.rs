@@ -51,8 +51,8 @@ parameter_types! {
 impl orml_nft::Config for Runtime {
 	type ClassId = u64;
 	type TokenId = u64;
-	type ClassData = ();
-	type TokenData = ();
+	type ClassData = ItemClassData<AccountId, BlockNumber>;
+	type TokenData = ItemTokenData<AccountId, BlockNumber>;
 	type MaxClassMetadata = MaxClassMetadata;
 	type MaxTokenMetadata = MaxTokenMetadata;
 }

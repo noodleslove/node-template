@@ -8,6 +8,7 @@ version = "0.1.1"
 
 [dependencies]
 codec = { default-features = false, features = ["derive"], package = "parity-scale-codec", version = "2.0.0" }
+serde = { version = "1.0.119", optional = true, features = ["derive"] }
 
 # Substrate dependencies
 frame-benchmarking = { default-features = false, optional = true, version = "3.1.0", git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.8" }
@@ -18,7 +19,6 @@ orml-traits = { default-features = false, path = "../traits" }
 orml-nft = { default-features = false, path = "../nft" }
 
 [dev-dependencies]
-serde = "1.0.119"
 sp-core = { default-features = false, version = "3.0.0", git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.8" }
 sp-io = { default-features = false, version = "3.0.0", git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.8" }
 sp-runtime = { default-features = false, version = "3.0.0", git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.8" }
@@ -31,6 +31,8 @@ std = [
 	"frame-system/std",
 	"frame-benchmarking/std",
 	"pallet-balances/std",
+
+	"serde",
 
 	"orml-traits/std",
 	"orml-nft/std",

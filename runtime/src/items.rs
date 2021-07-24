@@ -12,10 +12,16 @@ use crate::AccountId;
 #[derive(Encode, Decode, Eq, PartialEq, Copy, Clone, RuntimeDebug, PartialOrd, Ord)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub enum ItemType {
-    Weapon,
-    HeadGear,
-    Armor,
-    Shoe,
+    OfflineEvent,
+    OnlineEvent,
+}
+
+#[derive(Encode, Decode, Eq, PartialEq, Copy, Clone, RuntimeDebug, PartialOrd, Ord)]
+#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+pub enum ItemStatus {
+    Checked,
+    Unchecked,
+    Refund,
 }
 
 #[derive(Encode, Decode, Eq, PartialEq, Clone, RuntimeDebug, PartialOrd, Ord)]
@@ -23,16 +29,23 @@ pub enum ItemType {
 pub struct ItemClassData {
     pub item_type: ItemType,
     pub info: Vec<u8>,
+    pub uri: Vec<u8>,
+    pub poster: Vec<u8>,
+
+    pub start_time: u64,
+    pub end_time: u64,
+    pub start_sale_time: u64,
+    pub end_sale_time: u64,
 }
 
 #[derive(Encode, Decode, Eq, PartialEq, Clone, RuntimeDebug, PartialOrd, Ord)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct ItemTokenData {
     pub name: Vec<u8>,
-    pub attack: u64,
-    pub defense: u64,
-    pub speed: u64,
-    pub dexterity: u64,
+    pub price: u128,
+    pub zone_id: u64,
+    pub seat_id: Option<u64>,
+    pub status: ItemStatus,
 }
 
 pub const MAX_CLASS_METADATA: u32 = 1024;
@@ -50,42 +63,56 @@ pub fn items_genesis(
     vec![
         (
             owner.clone(),
-            b"sword".to_vec(),
+            b"hongkong_concerts".to_vec(),
             ItemClassData {
-                item_type: ItemType::Weapon,
-                info: b"Sword".to_vec(),
+                item_type: ItemType::OfflineEvent,
+                info: b"Hong Kong Concerts".to_vec(),
+                uri: b"https://fantour.io".to_vec(),
+                poster: b"https://fantour.io".to_vec(),
+
+                start_time: 1800,
+                end_time: 2000,
+                start_sale_time: 1200,
+                end_sale_time: 1400,
             },
             vec![
                 (
                     owner.clone(),
-                    b"iron_sword".to_vec(),
+                    b"gin_lee_concert".to_vec(),
                     ItemTokenData {
-                        name: b"Iron Sword".to_vec(),
-                        attack: 7,
-                        defense: 0,
-                        speed: 0,
-                        dexterity: 0,
+                        name: b"Gin Lee Concert".to_vec(),
+                        price: 5000,
+                        zone_id: 1,
+                        seat_id: Some(1),
+                        status: ItemStatus::Unchecked,
                     },
                 ),
                 (
                     owner.clone(),
-                    b"steel_sword".to_vec(),
+                    b"eason_chan_concert".to_vec(),
                     ItemTokenData {
-                        name: b"Steel Sword".to_vec(),
-                        attack: 14,
-                        defense: 0,
-                        speed: 0,
-                        dexterity: 2,
+                        name: b"Eason Chan Concert".to_vec(),
+                        price: 8000,
+                        zone_id: 1,
+                        seat_id: Some(1),
+                        status: ItemStatus::Unchecked,
                     },
                 ),
             ],
         ),
         (
             owner.clone(),
-            b"hat".to_vec(),
+            b"hongkong_musical".to_vec(),
             ItemClassData {
-                item_type: ItemType::HeadGear,
-                info: b"Hat".to_vec(),
+                item_type: ItemType::OfflineEvent,
+                info: b"Hong Kong Musical".to_vec(),
+                uri: b"https://fantour.io".to_vec(),
+                poster: b"https://fantour.io".to_vec(),
+
+                start_time: 1800,
+                end_time: 2000,
+                start_sale_time: 1200,
+                end_sale_time: 1400,
             },
             vec![],
         ),

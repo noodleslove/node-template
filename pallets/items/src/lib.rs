@@ -38,6 +38,10 @@ pub mod pallet {
     #[pallet::event]
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
 	pub enum Event<T: Config> {
+        /// [who, class_id, metadata]
+        ClassCreated(T::AccountId, T::ClassId, Vec<u8>),
+        /// [who, class_id]
+        ClassDestroyed(T::AccountId, T::ClassId),
         /// [who, (class_id, token_id), metadata]
 		ItemMinted(T::AccountId, (T::ClassId, T::TokenId), Vec<u8>),
         /// [who, to, (class_id, token_id)]
@@ -49,11 +53,31 @@ pub mod pallet {
 		MintItemError,
 		NotClassOwner,
 		NotItemOwner,
-		ClassNotExists
+		ClassNotExists,
+        CreateClassError,
+        DestroyClassError,
 	}
 
     #[pallet::call]
     impl<T: Config> Pallet<T> {
+
+        #[pallet::weight(10_000)]
+        pub fn create_item_class(
+            origin:     OriginFor<T>,
+            metadata:   Vec<u8>,
+            data:       ClassDataOf<T>,
+        ) -> DispatchResult {
+            let who = ensure_signed(origin)?;
+
+            let next_class_id = orml_nft::Pallet::<T>::next_class_id();
+
+            orml_nft::Pallet::<T>::create_class(&who, metadata.clone(), data)
+                .map_err(|_| Error::<T>::CreateClassError)?;
+
+            Self::deposit_event(Event::ClassCreated(who, next_class_id, metadata));
+
+            Ok(())
+        }
 
         #[pallet::weight(10_000)]
         pub fn mint_item(
@@ -79,6 +103,29 @@ pub mod pallet {
 
             Self::deposit_event(Event::ItemMinted(who, (cid, tid), metadata));
             
+            Ok(())
+        }
+
+        #[pallet::weight(10_000)]
+        pub fn destroy_item_class(
+            origin:     OriginFor<T>,
+            cid:        ClassIdOf<T>,
+        ) -> DispatchResult {
+            let who = ensure_signed(origin)?;
+
+            // CHECK: ensure this is called from the class owner
+            let class = orml_nft::Pallet::<T>::classes(cid)
+                .ok_or(Error::<T>::ClassNotExists)?;
+
+            if class.owner != who {
+                return Err(Error::<T>::NotClassOwner)?;
+            }
+
+            orml_nft::Pallet::<T>::destroy_class(&who, cid)
+                .map_err(|_| Error::<T>::DestroyClassError)?;
+
+            Self::deposit_event(Event::ClassDestroyed(who, cid));
+
             Ok(())
         }
 

@@ -111,11 +111,11 @@ pub mod pallet {
 	#[pallet::metadata(T::AccountId = "AccountId")]
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
 	pub enum Event<T: Config> {
-        /// [who, from_cid, from_bal, to_cid, to_bal]
+        /// \[who, from_cid, from_bal, to_cid, to_bal\]
         OrderSubmitted(T::AccountId, CurrencyIdOf<T>, BalanceOf<T>, CurrencyIdOf<T>, BalanceOf<T>),
-        /// [who, order_id]
+        /// \[who, order_id\]
         OrderTaken(T::AccountId, OrderId),
-        /// [who, order_id]
+        /// \[who, order_id\]
         OrderCancelled(T::AccountId, OrderId),
 	}
 

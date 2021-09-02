@@ -154,7 +154,17 @@ fn testnet_genesis(
 			key: root_key.clone(),
 		},
 		tokens: TokensConfig {
-			balances: endowed_accounts.iter().cloned().map(|acc| (acc, CurrencyId::FANT, 1 << 60)).collect(),
+			balances: endowed_accounts
+				.iter()
+				.cloned()
+				.flat_map(|acc| {
+					vec![
+						(acc.clone(), CurrencyId::FANT, 10u128.pow(16)),
+						(acc.clone(), CurrencyId::DOT, 10u128.pow(16)),
+						(acc.clone(), CurrencyId::BTC, 10u128.pow(16)),
+					]
+				})
+				.collect(),
 		},
 		nft: NftConfig {
 			tokens: items::items_genesis(&root_key),

@@ -43,9 +43,9 @@ pub fn development_config() -> Result<ChainSpec, String> {
 
 	Ok(ChainSpec::from_genesis(
 		// Name
-		"Development",
+		"Fantour Development",
 		// ID
-		"dev",
+		"fantour_dev",
 		ChainType::Development,
 		move || testnet_genesis(
 			wasm_binary,
@@ -69,7 +69,7 @@ pub fn development_config() -> Result<ChainSpec, String> {
 		// Telemetry
 		None,
 		// Protocol ID
-		None,
+		Some("fantour"),
 		// Properties
 		None,
 		// Extensions
@@ -82,9 +82,9 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 
 	Ok(ChainSpec::from_genesis(
 		// Name
-		"Local Testnet",
+		"Fantour Testnet",
 		// ID
-		"local_testnet",
+		"fantour_testnet",
 		ChainType::Local,
 		move || testnet_genesis(
 			wasm_binary,
@@ -117,7 +117,7 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 		// Telemetry
 		None,
 		// Protocol ID
-		None,
+		Some("fantour"),
 		// Properties
 		None,
 		// Extensions
@@ -154,7 +154,7 @@ fn testnet_genesis(
 			key: root_key.clone(),
 		},
 		tokens: TokensConfig {
-			balances: endowed_accounts.iter().cloned().map(|acc| (acc, CurrencyId::KSM, 1 << 60)).collect(),
+			balances: endowed_accounts.iter().cloned().map(|acc| (acc, CurrencyId::FANT, 1 << 60)).collect(),
 		},
 		nft: NftConfig {
 			tokens: items::items_genesis(&root_key),

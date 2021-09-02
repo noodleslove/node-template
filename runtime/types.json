@@ -1,9 +1,8 @@
 {
-  "AccountData": {
+  "TokenAccountData": {
     "free": "Balance",
     "reserved": "Balance",
-    "misc_forzen": "Balance",
-    "fee_forzen": "Balance"
+    "forzen": "Balance"
   },
 
   "BalanceLock": {
@@ -14,7 +13,7 @@
   "AccountOf": "AccountId",
 
   "CurrencyId": {
-    "_enum": ["Native", "DOT", "KSM", "BTC"]
+    "_enum": ["FANT", "DOT", "KSM", "BTC"]
   },
 
   "CurrencyIdOf": "CurrencyId",
@@ -44,7 +43,7 @@
   "TokenIdOf": "TokenId",
 
   "ItemType": {
-    "_enum": ["OfflineEventTicket", "OnlineEventTicket"]
+    "_enum": ["OfflineEvent", "OnlineEvent"]
   },
 
   "ItemStatus": {
@@ -62,9 +61,7 @@
     "start_sale_time": "u64",
     "end_sale_time": "u64",
 
-    "inspector": "AccountId",
-
-    "created_at": "Option<BlockNumber>"
+    "created_at": "BlockNumber"
   },
 
   "ItemTokenData": {
@@ -74,12 +71,10 @@
     "seat_id": "Option<u64>",
     "status": "ItemStatus",
 
-    "created_at": "Option<BlockNumber>",
+    "created_at": "BlockNumber",
     "inspected_at": "Option<BlockNumber>",
-    "inspected_with": "Option<BlockNumber>"
+    "inspected_with": "Option<AccountId>"
   },
-
-  "TokenData": "ItemTokenData",
 
   "MaxClassMetadata": 1024,
   "MaxTokenMetadata": 1024,
@@ -96,6 +91,8 @@
     "owner": "AccountId",
     "data": "ItemTokenData"
   },
+
+  "BlockNumberOf": "BlockNumber",
 
   "ClassDataOf": "ItemClassData",
   "TokenDataOf": "ItemTokenData"

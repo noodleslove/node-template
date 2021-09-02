@@ -2,7 +2,7 @@
 
 use sp_std::prelude::*;
 
-use crate::{AccountId, BlockNumber, Runtime};
+use crate::{AccountId, BlockNumber};
 
 pub const MAX_CLASS_METADATA: u32 = 1024;
 pub const MAX_TOKEN_METADATA: u32 = 1024;
@@ -13,7 +13,7 @@ pub fn items_genesis(
 ) -> Vec<(
     AccountId,
     Vec<u8>,
-    pallet_items::ItemClassData<AccountId, BlockNumber>,
+    pallet_items::ItemClassData<BlockNumber>,
     Vec<(AccountId, Vec<u8>, pallet_items::ItemTokenData<AccountId, BlockNumber>)>,
 )> {
     vec![
@@ -31,9 +31,7 @@ pub fn items_genesis(
                 start_sale_time: 1200,
                 end_sale_time: 1400,
 
-                inspector: owner.clone(),
-
-                created_at: None,
+                created_at: 0,
             },
             vec![
                 (
@@ -46,7 +44,7 @@ pub fn items_genesis(
                         seat_id: Some(1),
                         status: pallet_items::ItemStatus::Unchecked,
 
-                        created_at: None,
+                        created_at: 0,
                         inspected_at: None,
                         inspected_with: None,
                     },
@@ -61,7 +59,7 @@ pub fn items_genesis(
                         seat_id: Some(1),
                         status: pallet_items::ItemStatus::Unchecked,
 
-                        created_at: None,
+                        created_at: 0,
                         inspected_at: None,
                         inspected_with: None,
                     },
@@ -82,9 +80,7 @@ pub fn items_genesis(
                 start_sale_time: 1200,
                 end_sale_time: 1400,
 
-                inspector: owner.clone(),
-
-                created_at: None,
+                created_at: 0,
             },
             vec![],
         ),

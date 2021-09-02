@@ -114,7 +114,7 @@ pub struct BalanceLock<Balance> {
 
 /// balance information for an account.
 #[derive(Encode, Decode, Clone, PartialEq, Eq, Default, MaxEncodedLen, RuntimeDebug)]
-pub struct AccountData<Balance> {
+pub struct TokenAccountData<Balance> {
 	/// Non-reserved part of the balance. There may still be restrictions on
 	/// this, but it is the total pool what may in principle be transferred,
 	/// reserved.
@@ -134,7 +134,7 @@ pub struct AccountData<Balance> {
 	pub frozen: Balance,
 }
 
-impl<Balance: Saturating + Copy + Ord> AccountData<Balance> {
+impl<Balance: Saturating + Copy + Ord> TokenAccountData<Balance> {
 	/// The amount that this account's free balance may not be reduced
 	/// beyond.
 	pub(crate) fn frozen(&self) -> Balance {
@@ -264,7 +264,7 @@ pub mod module {
 		T::AccountId,
 		Twox64Concat,
 		T::CurrencyId,
-		AccountData<T::Balance>,
+		TokenAccountData<T::Balance>,
 		ValueQuery,
 	>;
 
@@ -366,7 +366,7 @@ impl<T: Config> Pallet<T> {
 		_who: &T::AccountId,
 		currency_id: T::CurrencyId,
 		amount: T::Balance,
-		account: &AccountData<T::Balance>,
+		account: &TokenAccountData<T::Balance>,
 	) -> DepositConsequence {
 		if amount.is_zero() {
 			return DepositConsequence::Success;
@@ -395,7 +395,7 @@ impl<T: Config> Pallet<T> {
 		who: &T::AccountId,
 		currency_id: T::CurrencyId,
 		amount: T::Balance,
-		account: &AccountData<T::Balance>,
+		account: &TokenAccountData<T::Balance>,
 	) -> WithdrawConsequence<T::Balance> {
 		if amount.is_zero() {
 			return WithdrawConsequence::Success;
@@ -442,7 +442,7 @@ impl<T: Config> Pallet<T> {
 	pub(crate) fn try_mutate_account<R, E>(
 		who: &T::AccountId,
 		currency_id: T::CurrencyId,
-		f: impl FnOnce(&mut AccountData<T::Balance>, bool) -> sp_std::result::Result<R, E>,
+		f: impl FnOnce(&mut TokenAccountData<T::Balance>, bool) -> sp_std::result::Result<R, E>,
 	) -> sp_std::result::Result<R, E> {
 		Accounts::<T>::try_mutate_exists(who, currency_id, |maybe_account| {
 			let existed = maybe_account.is_some();
@@ -493,7 +493,7 @@ impl<T: Config> Pallet<T> {
 	pub(crate) fn mutate_account<R>(
 		who: &T::AccountId,
 		currency_id: T::CurrencyId,
-		f: impl FnOnce(&mut AccountData<T::Balance>, bool) -> R,
+		f: impl FnOnce(&mut TokenAccountData<T::Balance>, bool) -> R,
 	) -> R {
 		Self::try_mutate_account(who, currency_id, |account, existed| -> Result<R, Infallible> {
 			Ok(f(account, existed))

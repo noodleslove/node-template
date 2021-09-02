@@ -80,7 +80,7 @@ pub type Amount = i128;
 #[derive(Encode, Decode, Eq, PartialEq, Copy, Clone, RuntimeDebug, PartialOrd, Ord)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub enum CurrencyId {
-	Native,
+	FANT,
 	DOT,
 	KSM,
 	BTC,
@@ -114,8 +114,8 @@ pub mod opaque {
 //   https://substrate.dev/docs/en/knowledgebase/runtime/upgrades#runtime-versioning
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-	spec_name: create_runtime_str!("node-template"),
-	impl_name: create_runtime_str!("node-template"),
+	spec_name: create_runtime_str!("fantour"),
+	impl_name: create_runtime_str!("fantour"),
 	authoring_version: 1,
 	// The version of the runtime specification. A full node will not attempt to use its native
 	//   runtime in substitute for the on-chain Wasm runtime unless all of `spec_name`,
@@ -374,7 +374,7 @@ impl orml_tokens::Config for Runtime {
 }
 
 parameter_types! {
-	pub const GetNativeCurrencyId: CurrencyId = CurrencyId::Native;
+	pub const GetNativeCurrencyId: CurrencyId = CurrencyId::FANT;
 }
 
 impl orml_currencies::Config for Runtime {
@@ -393,7 +393,7 @@ parameter_types! {
 impl orml_nft::Config for Runtime {
 	type ClassId = u64;
 	type TokenId = u64;
-	type ClassData = pallet_items::ItemClassData<AccountId, BlockNumber>;
+	type ClassData = pallet_items::ItemClassData<BlockNumber>;
 	type TokenData = pallet_items::ItemTokenData<AccountId, BlockNumber>;
 	type MaxClassMetadata = MaxClassMetadata;
 	type MaxTokenMetadata = MaxTokenMetadata;
